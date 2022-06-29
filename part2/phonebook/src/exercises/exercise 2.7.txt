@@ -1,0 +1,63 @@
+App.js:
+
+import { useState } from 'react'
+
+const App = () => {
+    const [persons, setPersons] = useState([
+        { name: 'Arto Hellas' }
+    ])
+    const [newName, setNewName] = useState('')
+
+    // On form submit, creates a new nameObject with const newName as name value,
+    // concats to persons[], resets form value
+    const addName = (event) => {
+        event.preventDefault()
+        // Creates new array of only name values
+        const names = persons.map(person => person.name)
+        // Checks if newName already exists in array
+        if (names.includes(newName)) {
+            // alert if name already exists (using backtick for template string)
+            alert(`${newName} is already added to phonebook`)
+        }
+        else {
+            // else creates new object with name value, concats to persons
+            const nameObject = {
+                name: newName
+            }
+            setPersons(persons.concat(nameObject))
+            setNewName('')
+        }
+    }
+
+    // Stores text that user enters in form as const newName using setNewName()
+    const handleNameEntry = (event) => {
+        //console.log(event.target.value)
+        setNewName(event.target.value)
+    }
+
+    return (
+        <div>
+            <div>debug: {newName}</div>
+            <h2>Phonebook</h2>
+            {/* runs addName() when form is submitted
+                handleNameEntry() sets const newName */}
+            <form onSubmit={addName}>
+                <div>
+                    name: <input value={newName} onChange={handleNameEntry} />
+                </div>
+              <div>
+                  <button type="submit">add</button>
+              </div>
+            </form>
+            <h2>Numbers</h2>
+            {/* Displays list of names by using array.map() to create an array of name values */}
+            <ul>
+                {persons.map((person, i) =>
+                    <div key={i}>{person.name}</div>
+                )}
+            </ul>
+        </div>
+    )
+}
+
+export default App
